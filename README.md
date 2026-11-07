@@ -71,7 +71,7 @@ What gets rewired is decided by the seed, so turning the knob is repeatable; THR
 - A note that starts from silence starts its operators in phase, so attacks are consistent, the way FM players expect.
 - **MIDI**: notes, pitch bend (2 semitones), mod wheel (vibrato), sustain pedal, all notes off.
 - Factory presets, all original: E PIANO 02, LATE NIGHT BASS, GLASS HOUSE, BRASS 87, MARIMBA MALLET, ORGAN STOP, CLAVINETTISH, FROZEN PAD, WOODBLOCK, FEEDBACK LEAD, SPANNER IN THE WORKS, DROPPED THE TRAY, FM HELLSCAPE, RUBBISH DAY, WHERE DID THAT COME FROM.
-- The face is the manners! card inverted: black print on brushed silver (`Resources/plate.jpg`, generated from the house card's wear so the grime matches the family), with green LCDs.
+- The face is the manners! card inverted: black print on brushed silver (`Resources/plate.jpg`) with a soft diagonal sheen and only the faintest hairlines of wear, and green LCDs. Its `Resources/maps.png` has the warm light-leak channel emptied, so nothing browns the metal.
 - Font: Barlow Semi Condensed, SIL Open Font License (see `Resources/BarlowSemiCondensed-OFL.txt`).
 - The shared face code lives in `Source/manners/`, copied from JX-PP unchanged.
 

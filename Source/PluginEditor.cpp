@@ -15,7 +15,7 @@ namespace
         t.ink = juce::Colour (20, 20, 22);
         t.accent = kAccent;
         t.base[0] = 0.99f; t.base[1] = 1.0f; t.base[2] = 1.02f;   // a cool, clean silver
-        t.leak[0] = 1.0f; t.leak[1] = 0.95f; t.leak[2] = 0.88f;   // the light leaks barely warm it
+        t.leak[0] = 1.0f; t.leak[1] = 1.0f; t.leak[2] = 1.0f;     // no warm leaks: the sheen in the plate is the light
         return t;
     }
 
