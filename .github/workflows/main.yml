@@ -1,0 +1,48 @@
+name: Build FREEKMOD
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  macos:
+    runs-on: macos-15
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Configure (universal arm64 + x86_64)
+        run: |
+          cmake -B build \
+            -DCMAKE_BUILD_TYPE=Release \
+            -DCMAKE_OSX_ARCHITECTURES="arm64;x86_64" \
+            -DCMAKE_OSX_DEPLOYMENT_TARGET=11.0 \
+            -DFREEKMOD_BUILD_TESTS=ON
+
+      - name: Build AU, VST3 and the engine test
+        run: cmake --build build --config Release --target FREEKMOD_AU FREEKMOD_VST3 FREEKMOD_Test -j 4
+
+      - name: Run offline engine test
+        run: ./build/FREEKMOD_Test_artefacts/Release/FREEKMOD_Test
+
+      - name: Sign (ad hoc) and zip
+        run: |
+          ART=build/FREEKMOD_artefacts/Release
+          codesign --force --deep --sign - "$ART/AU/FREEKMOD.component"
+          codesign --force --deep --sign - "$ART/VST3/FREEKMOD.vst3"
+          mkdir -p dist
+          ditto -c -k --keepParent "$ART/AU/FREEKMOD.component" dist/FREEKMOD-AU.zip
+          ditto -c -k --keepParent "$ART/VST3/FREEKMOD.vst3" dist/FREEKMOD-VST3.zip
+
+      - name: Upload plugins
+        uses: actions/upload-artifact@v4
+        with:
+          name: FREEKMOD-macOS
+          path: dist/*.zip
+
+      - name: Validate AU with auval
+        run: |
+          mkdir -p ~/Library/Audio/Plug-Ins/Components
+          cp -R build/FREEKMOD_artefacts/Release/AU/FREEKMOD.component ~/Library/Audio/Plug-Ins/Components/
+          killall -9 AudioComponentRegistrar || true
+          auval -v aumu Frkm Mnrs
